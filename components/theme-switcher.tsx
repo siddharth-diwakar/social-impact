@@ -1,77 +1,54 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Laptop, Moon, Sun } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
+
+import { Switch } from "@/components/ui/switch";
 
 const ThemeSwitcher = () => {
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
 
-  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted && theme === "system") {
+      setTheme((resolvedTheme ?? "light") === "dark" ? "dark" : "light");
+    }
+  }, [mounted, theme, resolvedTheme, setTheme]);
+
+  const isDark = useMemo(() => {
+    if (!mounted) return false;
+    const current = theme === "system" ? resolvedTheme : theme;
+    return current === "dark";
+  }, [mounted, theme, resolvedTheme]);
 
   if (!mounted) {
     return null;
   }
 
-  const ICON_SIZE = 16;
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"}>
-          {theme === "light" ? (
-            <Sun
-              key="light"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          ) : theme === "dark" ? (
-            <Moon
-              key="dark"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          ) : (
-            <Laptop
-              key="system"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-content" align="start">
-        <DropdownMenuRadioGroup
-          value={theme}
-          onValueChange={(e) => setTheme(e)}
-        >
-          <DropdownMenuRadioItem className="flex gap-2" value="light">
-            <Sun size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Light</span>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem className="flex gap-2" value="dark">
-            <Moon size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Dark</span>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem className="flex gap-2" value="system">
-            <Laptop size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>System</span>
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-2 rounded-full border border-emerald-100 bg-white/70 px-2 py-1 shadow-sm transition-colors dark:border-emerald-900 dark:bg-slate-900/60">
+      <Sun
+        className={`h-4 w-4 transition-colors ${
+          isDark ? "text-slate-400" : "text-emerald-600"
+        }`}
+      />
+      <Switch
+        checked={isDark}
+        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+        aria-label="Toggle dark mode"
+        className="h-5 w-10 data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-slate-300 dark:data-[state=unchecked]:bg-slate-700"
+      />
+      <Moon
+        className={`h-4 w-4 transition-colors ${
+          isDark ? "text-emerald-200" : "text-slate-400"
+        }`}
+      />
+    </div>
   );
 };
 

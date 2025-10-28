@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, FileStack, UploadCloud, Check } from "lucide-react";
+import { ArrowLeft, FileStack, UploadCloud } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { RecommendedChecklist } from "@/components/recommended-checklist";
 
 const recommendedDocs = [
   { name: "Business Plan", tag: "Planning" },
@@ -87,28 +88,7 @@ export default function DocumentsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
-              {recommendedDocs.map((doc) => (
-                <div
-                  key={doc.name}
-                  className="flex flex-col justify-between rounded-xl border border-emerald-100 bg-white/80 p-4 shadow-xs transition-colors hover:border-emerald-200 dark:border-emerald-900/60 dark:bg-slate-900/80 dark:hover:border-emerald-700"
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {doc.name}
-                    </p>
-                    <Badge className="w-fit border border-emerald-200 bg-emerald-50 text-[11px] font-medium text-emerald-700 dark:border-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-200">
-                      {doc.tag}
-                    </Badge>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="mt-3 w-fit gap-2 rounded-full border border-emerald-200 px-3 py-1 text-xs font-semibold text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/40"
-                  >
-                    <Check className="h-3.5 w-3.5" /> Mark as added
-                  </Button>
-                </div>
-              ))}
+              <RecommendedChecklist docs={recommendedDocs} />
             </CardContent>
           </Card>
 
@@ -164,4 +144,3 @@ export default function DocumentsPage() {
     </div>
   );
 }
-

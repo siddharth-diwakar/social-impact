@@ -162,7 +162,7 @@ export default function AssistantPage() {
                 Conversation tips
               </CardTitle>
               <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
-                Give GreenSage context to get more tailored responses.
+                Share a bit about your business to get more tailored responses from compl.io.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm text-slate-600 dark:text-slate-300">

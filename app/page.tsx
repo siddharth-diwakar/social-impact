@@ -1,16 +1,11 @@
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  BellRing,
-  FileText,
-  Globe2,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowUpRight, Globe2, ShieldCheck } from "lucide-react";
 
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SampleTagDemo } from "@/components/sample-tag-demo";
 import {
   Card,
   CardContent,
@@ -64,7 +59,7 @@ export default function Home() {
               href="/"
               className="text-lg font-semibold text-emerald-700 transition-colors hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-300"
             >
-              name
+              compl.io
             </Link>
           </div>
 
@@ -86,7 +81,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="sm"
-              className="border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-100"
+              className="rounded-full border-emerald-200 px-4 py-2 text-sm font-medium text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-100"
             >
               <Link href="/Profile">Profile</Link>
             </Button>
@@ -106,16 +101,6 @@ export default function Home() {
               businesses like yours—so you can plan with confidence instead of
               scrambling at the last minute.
             </p>
-            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-3 py-1 dark:border-emerald-900 dark:bg-slate-900">
-                <BellRing className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
-                Real-time alerts
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-3 py-1 dark:border-emerald-900 dark:bg-slate-900">
-                <FileText className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
-                Actionable guidance
-              </span>
-            </div>
           </div>
         </section>
 
@@ -214,7 +199,7 @@ export default function Home() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-slate-600 dark:text-slate-300 sm:max-w-md">
-                Not sure what a new rule means for you? Let the assistant break it down and outline a plan before deadlines sneak up.
+                Not sure what a new rule means for you? Let our assistant break it down and outline a plan.
               </p>
               <Button
                 asChild
@@ -228,6 +213,10 @@ export default function Home() {
               </Button>
             </CardContent>
           </Card>
+        </section>
+
+        <section>
+          <SampleTagDemo />
         </section>
       </main>
     </div>

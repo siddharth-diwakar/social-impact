@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 - Never invent new tags.
 `;
 
-    const apiKey = process.env.NEXT_PUBLIC_OPENAI_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       throw new Error("Missing OPENAI_API_KEY env var.");
     }

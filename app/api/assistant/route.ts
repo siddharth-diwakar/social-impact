@@ -37,12 +37,25 @@ export async function POST(req: Request) {
 
     const openai = new OpenAI({ apiKey });
 
-    const messages: ChatMessage[] = body.messages && body.messages.length
-      ? body.messages
-      : [
-          { role: "system", content: body.system || DEFAULT_SYSTEM },
-          ...(body.prompt ? [{ role: "user", content: body.prompt }] : []),
-        ];
+    let messages: ChatMessage[];
+    if (Array.isArray(body.messages) && body.messages.length > 0) {
+      // Trust only known roles, coerce others to user
+      const safe = body.messages.map((m) => {
+        const role: ChatMessage["role"] =
+          m.role === "system" || m.role === "assistant" || m.role === "user"
+            ? m.role
+            : "user";
+        return { role, content: String(m.content ?? "") } as ChatMessage;
+      });
+      messages = safe;
+    } else {
+      messages = [
+        { role: "system" as const, content: body.system || DEFAULT_SYSTEM },
+      ];
+      if (body.prompt) {
+        messages.push({ role: "user" as const, content: body.prompt });
+      }
+    }
 
     // Ensure there's always a system prompt at the start
     if (!messages.find((m) => m.role === "system")) {

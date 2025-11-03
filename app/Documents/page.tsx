@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, FileStack, UploadCloud } from "lucide-react";
+import { ArrowLeft, FileStack } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { RecommendedChecklist } from "@/components/recommended-checklist";
+import { DocumentUpload } from "@/components/document-upload";
+import { createClient } from "@/lib/supabase/server";
 
 const recommendedDocs = [
   { name: "Business Plan", tag: "Planning" },
@@ -26,18 +28,48 @@ const recommendedDocs = [
   { name: "Lease / Property Agreements", tag: "Legal" },
 ];
 
-const storageTips = [
-  "Keep compliance records available for surprise inspections.",
-  "Upload scans with clear titles so your team can find them fast.",
-  "Remember to update files after renewing licenses or policies.",
-];
 
 export const metadata = {
   title: "Documents",
   description: "Keep critical small-business documents organized and on-hand.",
 };
 
-export default function DocumentsPage() {
+export default async function DocumentsPage() {
+  const supabase = await createClient();
+  let documents = [];
+
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: docs } = await supabase
+        .from("documents")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("uploaded_at", { ascending: false });
+
+      if (docs) {
+        // Get signed URLs for each document
+        documents = await Promise.all(
+          docs.map(async (doc) => {
+            const { data: urlData } = await supabase.storage
+              .from("documents")
+              .createSignedUrl(doc.file_path, 3600);
+
+            return {
+              ...doc,
+              downloadUrl: urlData?.signedUrl || null,
+            };
+          })
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching documents:", error);
+    // Continue with empty documents array
+  }
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -93,51 +125,7 @@ export default function DocumentsPage() {
           </Card>
 
           <div className="flex flex-col gap-6">
-            <Card className="border-dashed border-emerald-200 bg-white/80 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
-              <label
-                htmlFor="doc-upload"
-                className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-transparent p-8 text-center text-sm text-slate-500 transition hover:border-emerald-200 hover:text-emerald-700 dark:text-slate-400 dark:hover:border-emerald-700 dark:hover:text-emerald-200"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200">
-                  <UploadCloud className="h-5 w-5" />
-                </span>
-                <span className="font-medium text-slate-700 dark:text-slate-200">
-                  Drag and drop files or click to browse
-                </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  Accepted: PDF, DOCX, XLSX, PNG, JPG · Max 10 files
-                </span>
-                <input
-                  id="doc-upload"
-                  name="documents"
-                  type="file"
-                  multiple
-                  accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,image/png,image/jpeg"
-                  className="sr-only"
-                />
-              </label>
-            </Card>
-
-            <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
-              <CardHeader>
-                <CardTitle className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                  Your uploads
-                </CardTitle>
-                <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
-                  No files yet. Upload key documents to keep them handy for permits, loans, and audits.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
-                <ul className="space-y-2">
-                  {storageTips.map((tip) => (
-                    <li key={tip} className="flex items-start gap-2">
-                      <span className="mt-1 h-2 w-2 rounded-full bg-emerald-500/80" />
-                      <span>{tip}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <DocumentUpload initialDocuments={documents} />
           </div>
         </section>
       </main>

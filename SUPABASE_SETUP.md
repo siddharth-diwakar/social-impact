@@ -1,13 +1,37 @@
 # Supabase Setup for Document Upload Feature
 
-This guide explains how to set up Supabase Storage for the document upload feature.
+## 🚀 Quick Setup (Recommended - 1 Minute)
 
-## Prerequisites
+**Easiest way: Run everything in one go!**
 
-- Access to your Supabase project dashboard
-- Admin access to the Supabase project
+1. Go to your Supabase dashboard: https://supabase.com/dashboard
+2. Select your project (`fjrydnkfpdscskdcghqw`)
+3. Click **"SQL Editor"** in the left sidebar
+4. Click **"New query"**
+5. Open `supabase/ALL_IN_ONE_SETUP.sql` and **copy the entire file**
+6. Paste into the SQL editor
+7. Click **"Run"** (or press Ctrl+Enter)
+8. ✅ **Done!** Everything is set up automatically
 
-## Step 1: Run Database Migration
+This one script will:
+- ✅ Create the `documents` storage bucket
+- ✅ Create the `documents` database table with all enhanced features
+- ✅ Add category, tags, expiration_date, shared_with, linked_deadline_id, and description columns
+- ✅ Set up all Row Level Security (RLS) policies (including shared document access)
+- ✅ Set up all storage policies
+- ✅ Create indexes for fast searching and filtering
+
+**That's it!** Total time: ~1 minute ⏱️
+
+> **Note:** If you already ran the basic setup, you can run just `supabase/migrations/002_add_document_features.sql` to add the enhanced features.
+
+---
+
+## 📋 Manual Setup (Alternative)
+
+If the all-in-one script doesn't work for some reason, follow these steps:
+
+### Step 1: Run Database Migration
 
 1. Go to your Supabase dashboard: https://supabase.com/dashboard
 2. Navigate to your project
@@ -20,7 +44,7 @@ This will:
 - Set up Row Level Security (RLS) policies
 - Ensure users can only access their own documents
 
-## Step 2: Create Storage Bucket
+### Step 2: Create Storage Bucket
 
 1. In your Supabase dashboard, click on "Storage" in the left sidebar
 2. Click "Create bucket"
@@ -29,8 +53,13 @@ This will:
    - **Public bucket**: ❌ Unchecked (keep private)
    - Click "Create bucket"
 
-## Step 3: Configure Storage Policies
+### Step 3: Configure Storage Policies
 
+1. Go back to "SQL Editor"
+2. Copy and paste the contents of `supabase/storage-policies.sql`
+3. Click "Run"
+
+Or manually:
 1. Click on the `documents` bucket you just created
 2. Click on "Policies" tab
 3. Click "New Policy" and create the following policies:

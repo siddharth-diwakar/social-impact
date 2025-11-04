@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     const {
@@ -12,24 +12,91 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch user's documents
-    const { data: documents, error } = await supabase
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get("search") || "";
+    const category = searchParams.get("category") || "";
+    const tag = searchParams.get("tag") || "";
+    const expired = searchParams.get("expired") === "true";
+
+    // Build query - fetch documents owned by user OR shared with user
+    // Using separate queries and combining results for better compatibility
+    const { data: ownedDocs, error: ownedError } = await supabase
       .from("documents")
       .select("*")
       .eq("user_id", user.id)
       .order("uploaded_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching documents:", error);
+    if (ownedError) {
+      console.error("Error fetching owned documents:", ownedError);
       return NextResponse.json(
-        { error: "Failed to fetch documents" },
+        { error: `Failed to fetch documents: ${ownedError.message}` },
         { status: 500 }
       );
     }
 
-    // Get public URLs for each document
+    // Fetch shared documents
+    const { data: sharedDocs, error: sharedError } = await supabase
+      .from("documents")
+      .select("*")
+      .contains("shared_with", [user.id])
+      .order("uploaded_at", { ascending: false });
+
+    if (sharedError) {
+      console.error("Error fetching shared documents:", sharedError);
+      // Continue with owned docs only if shared query fails
+    }
+
+    // Combine and deduplicate documents
+    const allDocs = [...(ownedDocs || [])];
+    if (sharedDocs) {
+      const sharedIds = new Set(allDocs.map((d) => d.id));
+      sharedDocs.forEach((doc) => {
+        if (!sharedIds.has(doc.id)) {
+          allDocs.push(doc);
+        }
+      });
+    }
+
+    // Sort by uploaded_at
+    allDocs.sort(
+      (a, b) =>
+        new Date(b.uploaded_at).getTime() - new Date(a.uploaded_at).getTime()
+    );
+
+    // Apply filters
+    let filteredDocs = allDocs;
+
+    if (category) {
+      filteredDocs = filteredDocs.filter((doc) => doc.category === category);
+    }
+
+    if (tag) {
+      filteredDocs = filteredDocs.filter(
+        (doc) => doc.tags && doc.tags.includes(tag)
+      );
+    }
+
+    if (search) {
+      const query = search.toLowerCase();
+      filteredDocs = filteredDocs.filter(
+        (doc) =>
+          doc.filename.toLowerCase().includes(query) ||
+          doc.description?.toLowerCase().includes(query)
+      );
+    }
+
+    // Filter by expiration if requested
+    if (expired) {
+      const now = new Date();
+      filteredDocs = filteredDocs.filter((doc) => {
+        if (!doc.expiration_date) return false;
+        return new Date(doc.expiration_date) < now;
+      });
+    }
+
+    // Get signed URLs for each document
     const documentsWithUrls = await Promise.all(
-      (documents || []).map(async (doc) => {
+      filteredDocs.map(async (doc) => {
         const { data: urlData } = await supabase.storage
           .from("documents")
           .createSignedUrl(doc.file_path, 3600); // URL valid for 1 hour

@@ -44,10 +44,11 @@ export default async function DocumentsPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
+      // Fetch user's own documents and documents shared with them
       const { data: docs } = await supabase
         .from("documents")
         .select("*")
-        .eq("user_id", user.id)
+        .or(`user_id.eq.${user.id},shared_with.cs.{${user.id}}`)
         .order("uploaded_at", { ascending: false });
 
       if (docs) {

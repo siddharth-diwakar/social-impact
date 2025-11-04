@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowUpRight, Globe2, ShieldCheck } from "lucide-react";
 
+import { Suspense } from "react";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { CalendarSync } from "@/components/calendar-sync";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SampleTagDemo } from "@/components/sample-tag-demo";
@@ -177,12 +179,9 @@ export default function Home() {
                   </p>
                 </div>
               ))}
-              <Button
-                variant="outline"
-                className="w-full border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/40"
-              >
-                Sync with calendar
-              </Button>
+              <Suspense fallback={<div className="h-10 w-full" />}>
+                <CalendarSync />
+              </Suspense>
             </CardContent>
           </Card>
         </section>

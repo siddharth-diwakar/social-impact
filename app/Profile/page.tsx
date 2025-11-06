@@ -24,6 +24,7 @@ import { BusinessDetailsForm } from "@/components/business-details-form";
 import { ProfileEditForm } from "@/components/profile-edit-form";
 import { AccountSettings } from "@/components/account-settings";
 import { PreferencesForm } from "@/components/preferences-form";
+import { NotificationPreferences } from "@/components/notification-preferences";
 import { DefaultAvatar } from "@/components/default-avatar";
 
 export const metadata = {
@@ -301,6 +302,10 @@ export default async function ProfilePage() {
 
           <TabsContent value="preferences" className="space-y-6">
             <PreferencesForm initialData={userMetadata} />
+            <NotificationPreferences
+              userEmail={email}
+              userPhone={userMetadata?.phone}
+            />
           </TabsContent>
         </Tabs>
       </main>

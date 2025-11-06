@@ -34,11 +34,26 @@ export function LoginForm({
     setError(null);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
+
+      // Check onboarding status
+      if (data.user) {
+        const { data: onboardingData } = await supabase
+          .from("onboarding")
+          .select("completed")
+          .eq("user_id", data.user.id)
+          .single();
+
+        if (!onboardingData?.completed) {
+          router.push("/onboarding");
+          return;
+        }
+      }
+
       router.push("/");
       router.refresh();
     } catch (error: unknown) {

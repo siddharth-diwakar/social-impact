@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/deadline-reminders",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-digest",
+      "schedule": "0 9 * * 1"
+    }
+  ]
+}
+

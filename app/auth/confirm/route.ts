@@ -11,11 +11,37 @@ export async function GET(request: NextRequest) {
 
   const supabase = await createClient();
 
+  // Helper function to check onboarding status and redirect
+  const checkOnboardingAndRedirect = async (redirectUrl: string) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.redirect(new URL(redirectUrl, request.url));
+    }
+
+    // Check if user has completed onboarding
+    const { data: onboardingData } = await supabase
+      .from("onboarding")
+      .select("completed")
+      .eq("user_id", user.id)
+      .single();
+
+    // If onboarding not completed, redirect to onboarding
+    if (!onboardingData?.completed) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+
+    // Otherwise, redirect to the intended destination
+    return NextResponse.redirect(new URL(redirectUrl, request.url));
+  };
+
   // Handle OAuth callback
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(new URL(next, request.url));
+      return await checkOnboardingAndRedirect(next);
     } else {
       return NextResponse.redirect(
         new URL(`/auth/error?error=${encodeURIComponent(error.message)}`, request.url)
@@ -30,8 +56,8 @@ export async function GET(request: NextRequest) {
       token_hash,
     });
     if (!error) {
-      // redirect user to specified redirect URL or root of app
-      return NextResponse.redirect(new URL(next, request.url));
+      // Check onboarding and redirect
+      return await checkOnboardingAndRedirect(next);
     } else {
       // redirect the user to an error page with some instructions
       return NextResponse.redirect(

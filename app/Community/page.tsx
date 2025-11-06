@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, MessageSquarePlus, Users2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ForumPostsList } from "@/components/forum/forum-posts-list";
 
 const discussionTopics = [
   "Funding",
@@ -20,51 +22,24 @@ const discussionTopics = [
   "Technology",
 ];
 
-const trendingThreads = [
-  {
-    title: "How are you preparing for the holiday rush?",
-    author: "Marisol P.",
-    board: "Seasonal Planning",
-    replies: 18,
-    lastActivity: "2h ago",
-  },
-  {
-    title: "Recommended POS systems that integrate with QuickBooks?",
-    author: "Dylan K.",
-    board: "Tools & Tech",
-    replies: 12,
-    lastActivity: "4h ago",
-  },
-  {
-    title: "What should I include in my first employee handbook?",
-    author: "Priya S.",
-    board: "People & Culture",
-    replies: 9,
-    lastActivity: "6h ago",
-  },
-];
-
 const messageBoards = [
   {
     name: "Growth Experiments",
     description:
       "Share marketing campaigns, storefront tests, and results you are seeing in real time.",
-    members: 512,
-    link: "#",
+    link: "/Community?board=Growth Experiments",
   },
   {
     name: "Local Collaborations",
     description:
       "Partner with nearby businesses for events, cross-promotions, and bundled offers.",
-    members: 328,
-    link: "#",
+    link: "/Community?board=Local Collaborations",
   },
   {
     name: "Operations & Logistics",
     description:
       "Discuss inventory planning, vendor relationships, shipping, and fulfillment tactics.",
-    members: 467,
-    link: "#",
+    link: "/Community?board=Operations & Logistics",
   },
 ];
 
@@ -73,7 +48,94 @@ export const metadata = {
   description: "Forum for small business owners to connect, share, and learn.",
 };
 
-export default function CommunityPage() {
+export default async function CommunityPage() {
+  const supabase = await createClient();
+  let initialPosts: any[] = [];
+
+  try {
+    // Fetch initial posts directly from database
+    const { data: posts, error } = await supabase
+      .from("forum_posts")
+      .select("*")
+      .eq("status", "published")
+      .order("last_activity_at", { ascending: false })
+      .limit(20);
+
+    if (!error && posts) {
+      // Get user info for posts
+      const postsWithUserInfo = await Promise.all(
+        posts.map(async (post) => {
+          let userInfo = null;
+          try {
+            if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+              const { createClient: createServiceClient } = await import("@supabase/supabase-js");
+              const serviceClient = createServiceClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                process.env.SUPABASE_SERVICE_ROLE_KEY!
+              );
+              const { data: userData } = await serviceClient.auth.admin.getUserById(post.user_id);
+              if (userData?.user) {
+                userInfo = {
+                  id: userData.user.id,
+                  email: userData.user.email,
+                  raw_user_meta_data: userData.user.user_metadata || {},
+                };
+              }
+            }
+          } catch (err) {
+            console.error("Error fetching user info:", err);
+          }
+
+          return {
+            ...post,
+            user: userInfo || {
+              id: post.user_id,
+              email: null,
+              raw_user_meta_data: {},
+            },
+          };
+        })
+      );
+
+      // Get current user to check likes and bookmarks
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const postIds = postsWithUserInfo.map((p) => p.id);
+        const [likesResult, bookmarksResult] = await Promise.all([
+          supabase
+            .from("forum_likes")
+            .select("post_id")
+            .eq("user_id", user.id)
+            .in("post_id", postIds),
+          supabase
+            .from("forum_bookmarks")
+            .select("post_id")
+            .eq("user_id", user.id)
+            .in("post_id", postIds),
+        ]);
+
+        const likedPostIds = new Set(
+          (likesResult.data || []).map((l) => l.post_id)
+        );
+        const bookmarkedPostIds = new Set(
+          (bookmarksResult.data || []).map((b) => b.post_id)
+        );
+
+        initialPosts = postsWithUserInfo.map((post) => ({
+          ...post,
+          isLiked: likedPostIds.has(post.id),
+          isBookmarked: bookmarkedPostIds.has(post.id),
+        }));
+      } else {
+        initialPosts = postsWithUserInfo;
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching initial posts:", error);
+  }
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
@@ -139,36 +201,8 @@ export default function CommunityPage() {
                 <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                   Trending discussions
                 </h2>
-                <Link
-                  href="#"
-                  className="text-sm font-medium text-emerald-700 transition hover:text-emerald-500 dark:text-emerald-200 dark:hover:text-emerald-100"
-                >
-                  View all
-                </Link>
               </div>
-              <div className="space-y-4">
-                {trendingThreads.map((thread) => (
-                  <Card
-                    key={thread.title}
-                    className="border-emerald-100 bg-white/90 shadow-sm transition hover:border-emerald-200 hover:shadow-md dark:border-emerald-900/60 dark:bg-slate-900/70 dark:hover:border-emerald-700"
-                  >
-                    <CardContent className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-1.5">
-                        <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                          {thread.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
-                          Started by {thread.author} · {thread.board}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4 text-xs font-medium text-slate-500 dark:text-slate-400">
-                        <span>{thread.replies} replies</span>
-                        <span>Last active {thread.lastActivity}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <ForumPostsList initialPosts={initialPosts} />
             </div>
 
             <div className="space-y-4">
@@ -190,13 +224,12 @@ export default function CommunityPage() {
                           {board.description}
                         </p>
                       </div>
-                      <div className="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
-                        <span>{board.members} members</span>
+                      <div className="flex items-center justify-end text-xs font-medium text-slate-500 dark:text-slate-400">
                         <Link
                           href={board.link}
                           className="text-emerald-700 transition hover:text-emerald-500 dark:text-emerald-200 dark:hover:text-emerald-100"
                         >
-                          Enter board →
+                          View posts →
                         </Link>
                       </div>
                     </CardContent>

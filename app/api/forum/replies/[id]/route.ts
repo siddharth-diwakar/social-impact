@@ -39,14 +39,7 @@ export async function PUT(
       .from("forum_replies")
       .update({ content: content.trim() })
       .eq("id", id)
-      .select(`
-        *,
-        user:user_id (
-          id,
-          email,
-          raw_user_meta_data
-        )
-      `)
+      .select("*")
       .single();
 
     if (error) {
@@ -57,7 +50,42 @@ export async function PUT(
       );
     }
 
-    return NextResponse.json({ reply: updatedReply });
+    // Get user info separately (since foreign key relationship isn't working)
+    let userInfo = null;
+    try {
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const { createClient: createServiceClient } = await import("@supabase/supabase-js");
+        const serviceClient = createServiceClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+        const { data: userData } = await serviceClient.auth.admin.getUserById(updatedReply.user_id);
+        if (userData?.user) {
+          userInfo = {
+            id: userData.user.id,
+            email: userData.user.email,
+            raw_user_meta_data: userData.user.user_metadata || {},
+          };
+        }
+      }
+    } catch (userError) {
+      console.error("Error fetching user info:", userError);
+    }
+
+    if (!userInfo) {
+      userInfo = {
+        id: updatedReply.user_id,
+        email: null,
+        raw_user_meta_data: {},
+      };
+    }
+
+    return NextResponse.json({
+      reply: {
+        ...updatedReply,
+        user: userInfo,
+      },
+    });
   } catch (error) {
     console.error("Error in PUT /api/forum/replies/[id]:", error);
     return NextResponse.json(

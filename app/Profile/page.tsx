@@ -5,6 +5,9 @@ import {
   Calendar,
   CheckCircle2,
   Edit,
+  MessageSquare,
+  Heart,
+  Bookmark,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +29,8 @@ import { AccountSettings } from "@/components/account-settings";
 import { PreferencesForm } from "@/components/preferences-form";
 import { NotificationPreferences } from "@/components/notification-preferences";
 import { DefaultAvatar } from "@/components/default-avatar";
+import { NotificationHistory } from "@/components/notification-history";
+import { UserActivityFeed } from "@/components/user-activity-feed";
 
 export const metadata = {
   title: "Profile",
@@ -108,12 +113,55 @@ export default async function ProfilePage() {
     .select("*", { count: "exact", head: true })
     .eq("user_id", user.id);
 
+  // Get forum stats
+  const [
+    { count: postCount },
+    { count: replyCount },
+    { count: bookmarkCount },
+  ] = await Promise.all([
+    supabase
+      .from("forum_posts")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("status", "published"),
+    supabase
+      .from("forum_replies")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("status", "published"),
+    supabase
+      .from("forum_bookmarks")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id),
+  ]);
+
+  // Get likes received on user's posts
+  const { data: userPosts } = await supabase
+    .from("forum_posts")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("status", "published");
+
+  let totalLikesReceived = 0;
+  if (userPosts && userPosts.length > 0) {
+    const postIds = userPosts.map((p) => p.id);
+    const { count: likesOnPosts } = await supabase
+      .from("forum_likes")
+      .select("*", { count: "exact", head: true })
+      .in("post_id", postIds);
+    totalLikesReceived = likesOnPosts || 0;
+  }
+
   // Calculate profile completion
   const profileCompletion = calculateProfileCompletion(userMetadata);
 
   // Get stats
   const stats = {
     documentCount: documentCount || 0,
+    postCount: postCount || 0,
+    replyCount: replyCount || 0,
+    likesReceived: totalLikesReceived,
+    bookmarkCount: bookmarkCount || 0,
     accountCreatedAt: user.created_at,
     lastSignInAt: user.last_sign_in_at,
     emailVerified: user.email_confirmed_at !== null,
@@ -185,30 +233,34 @@ export default async function ProfilePage() {
         </Card>
 
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="business">Business Details</TabsTrigger>
             <TabsTrigger value="account">Account Settings</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-              <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                    Personal Information
-                  </CardTitle>
-                  <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
-                    Edit your personal and business information
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ProfileEditForm
-                    initialData={userMetadata}
-                  />
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      Personal Information
+                    </CardTitle>
+                    <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
+                      Edit your personal and business information
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ProfileEditForm
+                      initialData={userMetadata}
+                    />
+                  </CardContent>
+                </Card>
+                <UserActivityFeed userId={user.id} limit={5} />
+              </div>
 
               <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
                 <CardHeader>
@@ -260,6 +312,55 @@ export default async function ProfilePage() {
                       {stats.documentCount}
                     </Link>
                   </div>
+                  <div className="border-t border-emerald-100 pt-4 dark:border-emerald-900">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      Forum Activity
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <MessageSquare className="h-4 w-4" />
+                          Posts
+                        </span>
+                        <Link
+                          href="/Community"
+                          className="font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-200"
+                        >
+                          {stats.postCount}
+                        </Link>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <MessageSquare className="h-4 w-4" />
+                          Replies
+                        </span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-100">
+                          {stats.replyCount}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <Heart className="h-4 w-4" />
+                          Likes Received
+                        </span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-100">
+                          {stats.likesReceived}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <Bookmark className="h-4 w-4" />
+                          Bookmarks
+                        </span>
+                        <Link
+                          href="/Community/bookmarks"
+                          className="font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-200"
+                        >
+                          {stats.bookmarkCount}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                   <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-4 text-xs text-emerald-700 dark:border-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-200">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4" />
@@ -306,6 +407,10 @@ export default async function ProfilePage() {
               userEmail={email}
               userPhone={userMetadata?.phone}
             />
+          </TabsContent>
+
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationHistory userId={user.id} />
           </TabsContent>
         </Tabs>
       </main>

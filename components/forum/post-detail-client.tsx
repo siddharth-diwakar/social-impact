@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Heart, MessageSquare, Bookmark, Clock, Send } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Heart, MessageSquare, Bookmark, Clock, Send, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -12,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createClient } from "@/lib/supabase/client";
 
 type ForumPost = {
   id: string;
@@ -63,11 +66,31 @@ export function PostDetailClient({
   initialPost,
   initialReplies,
 }: PostDetailClientProps) {
+  const router = useRouter();
   const [post, setPost] = useState<ForumPost>(initialPost);
   const [replies, setReplies] = useState<ForumReply[]>(initialReplies);
   const [replyContent, setReplyContent] = useState("");
   const [replyLoading, setReplyLoading] = useState(false);
   const [replyError, setReplyError] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [editingPost, setEditingPost] = useState(false);
+  const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
+  const [editPostTitle, setEditPostTitle] = useState(post.title);
+  const [editPostContent, setEditPostContent] = useState(post.content);
+  const [editReplyContent, setEditReplyContent] = useState("");
+  const [editLoading, setEditLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setCurrentUserId(user?.id || null);
+    };
+    getCurrentUser();
+  }, []);
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -196,6 +219,120 @@ export function PostDetailClient({
     }
   };
 
+  const handleEditPost = async () => {
+    if (!editPostTitle.trim() || !editPostContent.trim()) return;
+    setEditLoading(true);
+    try {
+      const response = await fetch(`/api/forum/posts/${post.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: editPostTitle.trim(),
+          content: editPostContent.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update post");
+      }
+
+      const data = await response.json();
+      setPost((prev) => ({ ...prev, ...data.post }));
+      setEditingPost(false);
+    } catch (error: any) {
+      console.error("Error updating post:", error);
+      alert(error.message || "Failed to update post");
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+      return;
+    }
+    setDeleteLoading(post.id);
+    try {
+      const response = await fetch(`/api/forum/posts/${post.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete post");
+      }
+
+      router.push("/Community");
+    } catch (error: any) {
+      console.error("Error deleting post:", error);
+      alert(error.message || "Failed to delete post");
+      setDeleteLoading(null);
+    }
+  };
+
+  const handleEditReply = async (replyId: string) => {
+    if (!editReplyContent.trim()) return;
+    setEditLoading(true);
+    try {
+      const response = await fetch(`/api/forum/replies/${replyId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: editReplyContent.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update reply");
+      }
+
+      const data = await response.json();
+      setReplies((prev) =>
+        prev.map((reply) => (reply.id === replyId ? { ...reply, ...data.reply, content: editReplyContent.trim() } : reply))
+      );
+      setEditingReplyId(null);
+      setEditReplyContent("");
+    } catch (error: any) {
+      console.error("Error updating reply:", error);
+      alert(error.message || "Failed to update reply");
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleDeleteReply = async (replyId: string) => {
+    if (!confirm("Are you sure you want to delete this reply? This action cannot be undone.")) {
+      return;
+    }
+    setDeleteLoading(replyId);
+    try {
+      const response = await fetch(`/api/forum/replies/${replyId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete reply");
+      }
+
+      setReplies((prev) => prev.filter((reply) => reply.id !== replyId));
+      setPost((prev) => ({
+        ...prev,
+        reply_count: Math.max(0, prev.reply_count - 1),
+      }));
+    } catch (error: any) {
+      console.error("Error deleting reply:", error);
+      alert(error.message || "Failed to delete reply");
+    } finally {
+      setDeleteLoading(null);
+    }
+  };
+
+  const isPostOwner = currentUserId === post.user.id;
+  const isReplyOwner = (replyUserId: string) => currentUserId === replyUserId;
+
   return (
     <div className="space-y-6">
       {/* Post */}
@@ -203,9 +340,76 @@ export function PostDetailClient({
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 space-y-2">
-              <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
-                {post.title}
-              </CardTitle>
+              {editingPost ? (
+                <div className="space-y-3">
+                  <Input
+                    value={editPostTitle}
+                    onChange={(e) => setEditPostTitle(e.target.value)}
+                    placeholder="Post title"
+                    className="text-lg font-semibold"
+                  />
+                  <Textarea
+                    value={editPostContent}
+                    onChange={(e) => setEditPostContent(e.target.value)}
+                    placeholder="Post content"
+                    rows={6}
+                    className="resize-none"
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={handleEditPost}
+                      disabled={editLoading || !editPostTitle.trim() || !editPostContent.trim()}
+                    >
+                      {editLoading ? "Saving..." : "Save"}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setEditingPost(false);
+                        setEditPostTitle(post.title);
+                        setEditPostContent(post.content);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+                    {post.title}
+                  </CardTitle>
+                  {isPostOwner && (
+                    <div className="flex gap-2 pt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setEditingPost(true);
+                          setEditPostTitle(post.title);
+                          setEditPostContent(post.content);
+                        }}
+                        className="h-8 text-xs"
+                      >
+                        <Edit className="mr-1 h-3 w-3" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleDeletePost}
+                        disabled={deleteLoading === post.id}
+                        className="h-8 text-xs text-red-600 hover:text-red-700 dark:text-red-400"
+                      >
+                        <Trash2 className="mr-1 h-3 w-3" />
+                        {deleteLoading === post.id ? "Deleting..." : "Delete"}
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
               <CardDescription className="flex items-center gap-4 text-sm">
                 <span>By {getUserName(post.user)}</span>
                 {post.board && (
@@ -335,9 +539,68 @@ export function PostDetailClient({
                           {formatTimeAgo(reply.created_at)}
                         </span>
                       </div>
-                      <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
-                        {reply.content}
-                      </p>
+                      {editingReplyId === reply.id ? (
+                        <div className="mt-2 space-y-3">
+                          <Textarea
+                            value={editReplyContent}
+                            onChange={(e) => setEditReplyContent(e.target.value)}
+                            placeholder="Reply content"
+                            rows={4}
+                            className="resize-none"
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => handleEditReply(reply.id)}
+                              disabled={editLoading || !editReplyContent.trim()}
+                            >
+                              {editLoading ? "Saving..." : "Save"}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingReplyId(null);
+                                setEditReplyContent("");
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                            {reply.content}
+                          </p>
+                          {isReplyOwner(reply.user.id) && (
+                            <div className="mt-2 flex gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setEditingReplyId(reply.id);
+                                  setEditReplyContent(reply.content);
+                                }}
+                                className="h-7 text-xs"
+                              >
+                                <Edit className="mr-1 h-3 w-3" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteReply(reply.id)}
+                                disabled={deleteLoading === reply.id}
+                                className="h-7 text-xs text-red-600 hover:text-red-700 dark:text-red-400"
+                              >
+                                <Trash2 className="mr-1 h-3 w-3" />
+                                {deleteLoading === reply.id ? "Deleting..." : "Delete"}
+                              </Button>
+                            </div>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-4 pt-2 border-t border-slate-200 dark:border-slate-700">

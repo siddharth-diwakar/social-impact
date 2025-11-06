@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { CalendarSync } from "@/components/calendar-sync";
+import { ComplianceHealthScore } from "@/components/compliance-health-score";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SampleTagDemo } from "@/components/sample-tag-demo";
@@ -106,116 +107,117 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-          <Card className="border-emerald-100 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
-            <CardHeader className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+        <section className="grid gap-6 lg:grid-cols-[2fr,1fr] lg:items-start">
+          <div className="space-y-6">
+            <Card className="border-emerald-100 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+              <CardHeader className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                    Latest compliance alerts
+                  </CardTitle>
+                  <CardDescription className="text-slate-500 dark:text-slate-400">
+                    Summaries tailored to Austin, TX floral retailers.
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="ghost"
+                  className="gap-2 text-sm text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+                >
+                  View all updates
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {complianceAlerts.map((alert) => (
+                  <article
+                    key={alert.title}
+                    className="rounded-xl border border-emerald-100 bg-white/80 p-4 shadow-sm transition-colors hover:border-emerald-200 dark:border-emerald-900 dark:bg-slate-900/80 dark:hover:border-emerald-700"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="mt-1 inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-100">
+                        <alert.icon className="h-5 w-5" />
+                      </span>
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                            {alert.title}
+                          </h3>
+                          <Badge className="bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400">
+                            {alert.status}
+                          </Badge>
+                        </div>
+                        <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+                          {alert.summary}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </CardContent>
+            </Card>
+            <Card className="border-emerald-100 bg-white/90 shadow-md transition-colors hover:border-emerald-200 dark:border-slate-800 dark:bg-slate-900/80 dark:hover:border-emerald-700">
+              <CardHeader>
+                <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                  AI Assistant
+                </CardTitle>
+                <CardDescription className="text-base text-slate-500 dark:text-slate-400">
+                  Describe a regulation or policy challenge and get an instant summary, next steps, and recommended contacts tailored to your business.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-slate-600 dark:text-slate-300 sm:max-w-md">
+                  Not sure what a new rule means for you? Let our assistant break it down and outline a plan.
+                </p>
+                <Button
+                  asChild
+                  variant="default"
+                  className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+                >
+                  <Link href="/Assistant">
+                    Open AI assistant
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+            <SampleTagDemo />
+          </div>
+          <div className="space-y-6">
+            <Card className="border-emerald-100 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+              <CardHeader>
                 <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  Latest compliance alerts
+                  Upcoming deadlines
                 </CardTitle>
                 <CardDescription className="text-slate-500 dark:text-slate-400">
-                  Summaries tailored to Austin, TX floral retailers.
+                  Prioritized by proximity and impact.
                 </CardDescription>
-              </div>
-              <Button
-                variant="ghost"
-                className="gap-2 text-sm text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
-              >
-                View all updates
-                <ArrowUpRight className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              {complianceAlerts.map((alert) => (
-                <article
-                  key={alert.title}
-                  className="rounded-xl border border-emerald-100 bg-white/80 p-4 shadow-sm transition-colors hover:border-emerald-200 dark:border-emerald-900 dark:bg-slate-900/80 dark:hover:border-emerald-700"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1 inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-100">
-                      <alert.icon className="h-5 w-5" />
-                    </span>
-                    <div className="space-y-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                          {alert.title}
-                        </h3>
-                        <Badge className="bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400">
-                          {alert.status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
-                        {alert.summary}
-                      </p>
-                    </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {upcomingDeadlines.map((item) => (
+                  <div
+                    key={item.title}
+                    className="rounded-lg border border-emerald-100 bg-emerald-50/40 p-4 text-sm text-slate-700 dark:border-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-100"
+                  >
+                    <p className="font-medium text-slate-900 dark:text-slate-100">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
+                      Due {item.due}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                      {item.note}
+                    </p>
                   </div>
-                </article>
-              ))}
-            </CardContent>
-          </Card>
-          <Card className="flex h-full flex-col justify-between border-emerald-100 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                Upcoming deadlines
-              </CardTitle>
-              <CardDescription className="text-slate-500 dark:text-slate-400">
-                Prioritized by proximity and impact.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {upcomingDeadlines.map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-lg border border-emerald-100 bg-emerald-50/40 p-4 text-sm text-slate-700 dark:border-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-100"
-                >
-                  <p className="font-medium text-slate-900 dark:text-slate-100">
-                    {item.title}
-                  </p>
-                  <p className="mt-1 text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
-                    Due {item.due}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                    {item.note}
-                  </p>
-                </div>
-              ))}
-              <Suspense fallback={<div className="h-10 w-full" />}>
-                <CalendarSync />
-              </Suspense>
-            </CardContent>
-          </Card>
-        </section>
-
-        <section>
-          <Card className="border-emerald-100 bg-white/90 shadow-md transition-colors hover:border-emerald-200 dark:border-slate-800 dark:bg-slate-900/80 dark:hover:border-emerald-700">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                AI Assistant
-              </CardTitle>
-              <CardDescription className="text-base text-slate-500 dark:text-slate-400">
-                Describe a regulation or policy challenge and get an instant summary, next steps, and recommended contacts tailored to your business.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-slate-600 dark:text-slate-300 sm:max-w-md">
-                Not sure what a new rule means for you? Let our assistant break it down and outline a plan.
-              </p>
-              <Button
-                asChild
-                variant="default"
-                className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
-              >
-                <Link href="/Assistant">
-                  Open AI assistant
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </section>
-
-        <section>
-          <SampleTagDemo />
+                ))}
+                <Suspense fallback={<div className="h-10 w-full" />}>
+                  <CalendarSync />
+                </Suspense>
+              </CardContent>
+            </Card>
+            <Suspense fallback={<div className="h-64 w-full" />}>
+              <ComplianceHealthScore />
+            </Suspense>
+          </div>
         </section>
       </main>
     </div>

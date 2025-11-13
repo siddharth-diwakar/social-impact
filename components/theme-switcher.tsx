@@ -31,21 +31,21 @@ const ThemeSwitcher = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-full border border-emerald-100 bg-white/70 px-2 py-1 shadow-sm transition-colors dark:border-emerald-900 dark:bg-slate-900/60">
+    <div className="flex items-center gap-2 rounded-full border border-[#EDD9D4]/40 bg-[#531324]/60 px-2 py-1 shadow-sm transition-colors">
       <Sun
         className={`h-4 w-4 transition-colors ${
-          isDark ? "text-slate-400" : "text-emerald-600"
+          isDark ? "text-[#EDD9D4]/50" : "text-[#EDD9D4]"
         }`}
       />
       <Switch
         checked={isDark}
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         aria-label="Toggle dark mode"
-        className="h-5 w-10 data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-slate-300 dark:data-[state=unchecked]:bg-slate-700"
+        className="h-5 w-10 data-[state=checked]:bg-[#EDD9D4] data-[state=unchecked]:bg-[#7D3227]"
       />
       <Moon
         className={`h-4 w-4 transition-colors ${
-          isDark ? "text-emerald-200" : "text-slate-400"
+          isDark ? "text-[#EDD9D4]" : "text-[#EDD9D4]/50"
         }`}
       />
     </div>

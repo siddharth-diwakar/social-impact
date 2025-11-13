@@ -91,7 +91,7 @@ export function OnboardingFlow() {
         .single();
 
       if (onboardingData?.completed) {
-        router.push("/");
+        router.push("/dashboard");
         return;
       }
 
@@ -162,7 +162,7 @@ export function OnboardingFlow() {
 
     // Small delay to show confetti
     setTimeout(() => {
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     }, 1000);
   };
@@ -656,4 +656,3 @@ function SuccessStep({
     </Card>
   );
 }
-

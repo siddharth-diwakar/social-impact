@@ -72,36 +72,36 @@ export default async function DocumentsPage() {
     // Continue with empty documents array
   }
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+    <div className="min-h-screen text-[#EDD9D4]">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
         <Button
           variant="ghost"
-          className="w-fit gap-2 text-sm text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:text-emerald-200 dark:hover:bg-emerald-900/40"
+          className="w-fit gap-2 text-sm text-[#EDD9D4] hover:bg-[#EDD9D4]/10"
           asChild
         >
-          <Link href="/">
+          <Link href="/dashboard">
             <ArrowLeft className="h-4 w-4" />
             Back to dashboard
           </Link>
         </Button>
 
-        <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+        <Card className="glass-panel border border-[#EDD9D4]/25">
           <CardHeader className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-2">
-              <Badge className="w-fit bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400">
+              <Badge className="w-fit border border-[#EDD9D4]/30 bg-[#AF755C]/60 text-[#3E1421] shadow-sm">
                 Documents hub
               </Badge>
-              <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+              <CardTitle className="text-2xl font-semibold text-[#EDD9D4]">
                 Important documents
               </CardTitle>
-              <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
+              <CardDescription className="text-sm text-[#EDD9D4]/70">
                 Store essential files securely so you can access them anytime and prove compliance quickly.
               </CardDescription>
             </div>
             <Button
               asChild
               variant="outline"
-              className="gap-2 rounded-full border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-100"
+              className="gap-2 rounded-full border border-[#EDD9D4]/30 text-[#EDD9D4] hover:border-[#EDD9D4] hover:bg-[#EDD9D4]/10"
             >
               <Link href="/Posting">
                 <FileStack className="h-4 w-4" /> Ask community about a document
@@ -111,12 +111,12 @@ export default async function DocumentsPage() {
         </Card>
 
         <section className="grid gap-6 lg:grid-cols-[3fr,2fr]">
-          <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+          <Card className="glass-panel border border-[#EDD9D4]/25">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <CardTitle className="text-lg font-semibold text-[#EDD9D4]">
                 Recommended checklist
               </CardTitle>
-              <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
+              <CardDescription className="text-sm text-[#EDD9D4]/70">
                 Tick items off as you gather the documents that regulators most often request.
               </CardDescription>
             </CardHeader>

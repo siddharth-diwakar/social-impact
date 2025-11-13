@@ -12,16 +12,26 @@ export async function AuthButton() {
   const user = data?.claims;
 
   const headerButtonClass =
-    "rounded-full border-emerald-200 px-4 py-2 text-sm font-medium text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-900 dark:text-emerald-200 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-100";
+    "rounded-full border border-[#EDD9D4]/50 px-4 py-2 text-sm font-medium text-[#EDD9D4] hover:border-[#EDD9D4] hover:bg-[#EDD9D4]/10 hover:text-white";
 
   return user ? (
     <LogoutButton className={headerButtonClass} />
   ) : (
     <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
+      <Button
+        asChild
+        size="sm"
+        className="border border-[#EDD9D4]/50 bg-transparent text-[#EDD9D4] hover:bg-[#EDD9D4]/10"
+        variant="outline"
+      >
         <Link href="/auth/login">Sign in</Link>
       </Button>
-      <Button asChild size="sm" variant={"default"}>
+      <Button
+        asChild
+        size="sm"
+        className="bg-[#EDD9D4] text-[#3E1421] hover:bg-[#EDD9D4]/90"
+        variant="default"
+      >
         <Link href="/auth/sign-up">Sign up</Link>
       </Button>
     </div>

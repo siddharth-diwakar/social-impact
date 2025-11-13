@@ -13,6 +13,13 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        brand: {
+          deep: "#3E1421",
+          wine: "#531324",
+          umber: "#7D3227",
+          sugar: "#AF755C",
+          rose: "#EDD9D4",
+        },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

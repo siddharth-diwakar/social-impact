@@ -39,7 +39,7 @@ export default async function PostDetailPage({
     if (postError || !post) {
       console.error("Error fetching post:", postError);
       return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+        <div className="min-h-screen text-[#EDD9D4]">
           <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
             <Button
               asChild
@@ -208,7 +208,7 @@ export default async function PostDetailPage({
 
   if (!postData || !postData.post) {
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+      <div className="min-h-screen text-[#EDD9D4]">
         <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
           <Button
             asChild
@@ -233,7 +233,7 @@ export default async function PostDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+    <div className="min-h-screen text-[#EDD9D4]">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <Button
           asChild
@@ -251,4 +251,3 @@ export default async function PostDetailPage({
     </div>
   );
 }
-

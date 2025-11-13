@@ -31,10 +31,10 @@ export default function OnboardingPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen items-center justify-center text-[#EDD9D4]">
         <div className="text-center">
-          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-emerald-600 border-t-transparent mx-auto"></div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">Loading...</p>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-[#EDD9D4] border-t-transparent"></div>
+          <p className="text-sm text-[#EDD9D4]/70">Loading...</p>
         </div>
       </div>
     );
@@ -46,5 +46,4 @@ export default function OnboardingPage() {
 
   return <OnboardingFlow />;
 }
-
 

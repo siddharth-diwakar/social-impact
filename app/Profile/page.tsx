@@ -168,19 +168,19 @@ export default async function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+    <div className="min-h-screen text-[#EDD9D4]">
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <Button
           asChild
           variant="ghost"
           className="w-fit gap-2 text-sm text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:text-emerald-200 dark:hover:bg-emerald-900/40"
         >
-          <Link href="/">
+          <Link href="/dashboard">
             <ArrowLeft className="h-4 w-4" /> Back to dashboard
           </Link>
         </Button>
 
-        <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+        <Card className="glass-panel border border-[#EDD9D4]/25">
           <CardHeader className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
               <div className="flex flex-col items-center gap-3">
@@ -221,7 +221,7 @@ export default async function ProfilePage() {
                 )}
               </div>
             </div>
-            <div className="rounded-2xl border border-emerald-100 bg-white/80 p-4 text-sm text-emerald-700 shadow-sm dark:border-emerald-900 dark:bg-slate-900/70 dark:text-emerald-200">
+            <div className="rounded-2xl border border border-[#EDD9D4]/25 bg-[#3E1421]/60 p-4 text-sm text-[#EDD9D4] shadow-sm">
               <p className="font-semibold">
                 Profile completion: {profileCompletion}%
               </p>
@@ -244,7 +244,7 @@ export default async function ProfilePage() {
           <TabsContent value="profile" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
               <div className="space-y-6">
-                <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+                <Card className="glass-panel border border-[#EDD9D4]/25">
                   <CardHeader>
                     <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                       Personal Information
@@ -262,7 +262,7 @@ export default async function ProfilePage() {
                 <UserActivityFeed userId={user.id} limit={5} />
               </div>
 
-              <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+              <Card className="glass-panel border border-[#EDD9D4]/25">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                     Brand Snapshot
@@ -376,7 +376,7 @@ export default async function ProfilePage() {
           </TabsContent>
 
           <TabsContent value="business" className="space-y-6">
-            <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+            <Card className="glass-panel border border-[#EDD9D4]/25">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                   Business Details

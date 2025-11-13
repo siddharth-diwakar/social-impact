@@ -103,7 +103,7 @@ export default async function BookmarksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-50">
+    <div className="min-h-screen text-[#EDD9D4]">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <Button
           asChild
@@ -115,7 +115,7 @@ export default async function BookmarksPage() {
           </Link>
         </Button>
 
-        <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+        <Card className="glass-panel border border-[#EDD9D4]/25">
           <CardHeader>
             <div className="flex items-center gap-3">
               <Bookmark className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
@@ -136,7 +136,7 @@ export default async function BookmarksPage() {
         {bookmarkedPosts.length > 0 ? (
           <ForumPostsList initialPosts={bookmarkedPosts} />
         ) : (
-          <Card className="border-emerald-100 bg-white/90 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900/70">
+          <Card className="glass-panel border border-[#EDD9D4]/25">
             <CardContent className="py-12 text-center">
               <Bookmark className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" />
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
@@ -152,4 +152,3 @@ export default async function BookmarksPage() {
     </div>
   );
 }
-

@@ -40,21 +40,7 @@ export function LoginForm({
       });
       if (error) throw error;
 
-      // Check onboarding status
-      if (data.user) {
-        const { data: onboardingData } = await supabase
-          .from("onboarding")
-          .select("completed")
-          .eq("user_id", data.user.id)
-          .single();
-
-        if (!onboardingData?.completed) {
-          router.push("/onboarding");
-          return;
-        }
-      }
-
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
@@ -72,7 +58,7 @@ export function LoginForm({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/confirm?next=/`,
+          redirectTo: `${window.location.origin}/auth/confirm?next=/dashboard`,
         },
       });
       if (error) throw error;

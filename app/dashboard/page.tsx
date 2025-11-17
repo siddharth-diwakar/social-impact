@@ -7,10 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { CalendarSync } from "@/components/calendar-sync";
-import { ComplianceHealthScore } from "@/components/compliance-health-score";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { SampleTagDemo } from "@/components/sample-tag-demo";
 import {
   Card,
   CardContent,
@@ -182,8 +180,6 @@ export default async function DashboardPage() {
                 </Button>
               </CardContent>
             </Card>
-
-            <SampleTagDemo />
           </div>
 
           <div className="space-y-6">
@@ -215,8 +211,7 @@ export default async function DashboardPage() {
               </CardContent>
             </Card>
             <Suspense fallback={<div className="h-64 w-full" />}>
-              <ComplianceHealthScore />
-            </Suspense>
+              </Suspense>
           </div>
         </section>
       </main>

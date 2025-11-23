@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { ArrowUpRight, Globe2, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Crown, Globe2, ShieldCheck } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 import { AuthButton } from "@/components/auth-button";
@@ -52,6 +52,10 @@ const upcomingDeadlines = [
   },
 ];
 
+const membershipStatus = {
+  tier: "Free plan",
+};
+
 export default async function DashboardPage() {
   const supabase = await createClient();
   const {
@@ -72,6 +76,15 @@ export default async function DashboardPage() {
               className="text-lg font-semibold text-[#EDD9D4] transition-colors hover:text-white"
             >
               compl.io
+            </Link>
+            <Link
+              href="/dashboard/payments"
+              className="inline-flex rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EDD9D4]/60"
+            >
+              <Badge className="flex items-center gap-1 rounded-full border border-[#EDD9D4]/40 bg-[#EDD9D4]/10 text-xs font-semibold uppercase tracking-wide text-[#EDD9D4] hover:border-[#EDD9D4] hover:bg-[#EDD9D4]/15">
+                <Crown className="h-3.5 w-3.5" />
+                {membershipStatus.tier}
+              </Badge>
             </Link>
           </div>
 
@@ -105,15 +118,6 @@ export default async function DashboardPage() {
       </header>
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8">
-        <section className="glass-panel rounded-3xl border border-[#EDD9D4]/25 p-8">
-          <div className="space-y-3">
-            <h1 className="text-3xl font-semibold">Stay ahead of policy shifts in your community.</h1>
-            <p className="max-w-3xl text-base text-[#EDD9D4]/80">
-              We surface local, state, and federal rule changes that impact small businesses like yours—so you can plan with confidence instead of scrambling at the last minute.
-            </p>
-          </div>
-        </section>
-
         <section className="grid gap-6 lg:grid-cols-[2fr,1fr] lg:items-start">
           <div className="space-y-6">
             <Card className="glass-panel border border-[#EDD9D4]/20">
@@ -210,8 +214,6 @@ export default async function DashboardPage() {
                 </Suspense>
               </CardContent>
             </Card>
-            <Suspense fallback={<div className="h-64 w-full" />}>
-              </Suspense>
           </div>
         </section>
       </main>

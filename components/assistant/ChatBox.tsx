@@ -131,7 +131,7 @@ export default function ChatBox() {
       </div>
 
       <form
-        className="mx-auto flex w-full max-w-2xl flex-col gap-2 rounded-xl border border-emerald-100 bg-white p-3 shadow-sm dark:border-emerald-900 dark:bg-slate-900/70"
+        className="mx-auto flex w-full max-w-2xl flex-col gap-2 rounded-xl border border-[#EDD9D4]/30 bg-white/70 p-3 shadow-sm backdrop-blur dark:border-emerald-900 dark:bg-slate-900/70"
         onSubmit={(e) => {
           e.preventDefault();
           if (!loading) sendPrompt(input);
@@ -142,29 +142,15 @@ export default function ChatBox() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask the assistant about marketing, operations, staffing…"
-          className="min-h-[44px] resize-none border border-emerald-200 bg-white text-sm text-slate-800 placeholder:text-slate-500 focus-visible:border-emerald-400 focus-visible:ring-emerald-500/30 dark:border-emerald-900 dark:bg-slate-900 dark:text-slate-200 dark:placeholder:text-slate-400"
+          className="min-h-[44px] resize-none border border-[#EDD9D4]/50 bg-white text-sm text-[#3E1421] placeholder:text-[#531324] focus-visible:border-[#AF755C] focus-visible:ring-[#AF755C]/30 dark:border-emerald-900 dark:bg-slate-900 dark:text-slate-200 dark:placeholder:text-slate-400"
         />
         <div className="flex items-center justify-between gap-2">
-          <div className="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
-            {starterIdeas.map((idea) => (
-              <Button
-                key={idea}
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setInput(idea)}
-                className="h-7 rounded-full bg-emerald-50 px-3 text-xs text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-200 dark:hover:bg-emerald-500/20"
-              >
-                {idea}
-              </Button>
-            ))}
-          </div>
           <div className="flex items-center gap-2">
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-full text-emerald-700 hover:bg-emerald-50 dark:text-emerald-200 dark:hover:bg-emerald-500/20"
+              className="h-9 w-9 rounded-full text-[#EDD9D4] hover:bg-[#EDD9D4]/10 dark:text-emerald-200 dark:hover:bg-emerald-500/20"
               aria-label="Attach file"
             >
               <Paperclip className="h-4 w-4" />
@@ -172,7 +158,7 @@ export default function ChatBox() {
             <Button
               type="submit"
               disabled={loading}
-              className="h-9 rounded-full bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500 disabled:opacity-60 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+              className="h-9 rounded-full border border-[#EDD9D4]/40 bg-[#EDD9D4] px-4 text-sm font-semibold text-[#3E1421] shadow-sm transition hover:bg-[#EDD9D4]/90 disabled:opacity-60 dark:bg-emerald-500 dark:hover:bg-emerald-400"
             >
               {loading ? "Sending" : "Send"}
               <Send className="ml-2 h-4 w-4" />

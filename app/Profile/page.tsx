@@ -173,7 +173,7 @@ export default async function ProfilePage() {
         <Button
           asChild
           variant="ghost"
-          className="w-fit gap-2 text-sm text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:text-emerald-200 dark:hover:bg-emerald-900/40"
+          className="w-fit gap-2 text-sm text-[#EDD9D4] hover:bg-[#EDD9D4]/10"
         >
           <Link href="/dashboard">
             <ArrowLeft className="h-4 w-4" /> Back to dashboard
@@ -188,7 +188,7 @@ export default async function ProfilePage() {
                   <img
                     src={avatarUrl}
                     alt={displayName}
-                    className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md ring-2 ring-emerald-200 dark:border-slate-900 dark:ring-emerald-700/60"
+                    className="h-24 w-24 rounded-full border-4 border-[#EDD9D4]/70 object-cover shadow-md ring-2 ring-[#AF755C]"
                   />
                 ) : (
                   <DefaultAvatar
@@ -202,20 +202,20 @@ export default async function ProfilePage() {
                 />
               </div>
               <div className="space-y-2 text-center sm:text-left">
-                <Badge className="w-fit bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400">
+                <Badge className="w-fit border border-[#EDD9D4]/40 bg-[#EDD9D4] text-[#3E1421] shadow-sm hover:bg-[#EDD9D4]/90">
                   {userMetadata.business_type || "Business Owner"}
                 </Badge>
-                <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+                <h1 className="text-2xl font-semibold text-[#EDD9D4]">
                   {displayName}
                 </h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-[#EDD9D4]/80">
                   {email}
                   {stats.emailVerified && (
-                    <CheckCircle2 className="ml-2 inline h-4 w-4 text-emerald-600" />
+                    <CheckCircle2 className="ml-2 inline h-4 w-4 text-[#AF755C]" />
                   )}
                 </p>
                 {userMetadata.location && (
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <p className="text-sm text-[#EDD9D4]/70">
                     📍 {userMetadata.location}
                   </p>
                 )}

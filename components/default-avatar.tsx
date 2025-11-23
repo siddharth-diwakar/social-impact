@@ -61,9 +61,9 @@ export function DefaultAvatar({
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white font-bold shadow-md ring-2 ring-emerald-200 dark:border-slate-900 dark:ring-emerald-700/60 select-none overflow-hidden flex-shrink-0",
+        "flex flex-shrink-0 select-none items-center justify-center overflow-hidden rounded-full border-4 border-[#EDD9D4]/80 bg-gradient-to-br from-[#7D3227] via-[#531324] to-[#3E1421] text-white font-bold shadow-md ring-2 ring-[#EDD9D4]/40 dark:border-slate-900",
         sizeClasses[size],
-        className
+        className,
       )}
       aria-label={hasInitials ? `Avatar with initials ${initials}` : "Default user avatar"}
       style={{
@@ -83,8 +83,8 @@ export function DefaultAvatar({
       ) : (
         <User
           className={cn(
-            "text-emerald-100 dark:text-emerald-200 flex-shrink-0",
-            iconSizeClasses[size]
+            "flex-shrink-0 text-[#EDD9D4]",
+            iconSizeClasses[size],
           )}
           strokeWidth={2}
           aria-hidden="true"
@@ -93,4 +93,3 @@ export function DefaultAvatar({
     </div>
   );
 }
-

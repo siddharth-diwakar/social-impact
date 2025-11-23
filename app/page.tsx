@@ -6,6 +6,8 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Hero } from "@/components/ui/animated-hero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Pricing } from "@/components/ui/pricing";
+import { mockPricingPlans } from "@/lib/data/pricing";
 const stats = [
   { label: "Policies tracked", value: "2,400+" },
   { label: "Hours saved / month", value: "16" },
@@ -58,6 +60,13 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </section>
+        <section className="rounded-3xl border border-[#AF755C]/50 bg-[#3E1421]/60 shadow-[0_40px_180px_-80px_rgba(237,217,212,0.4)]">
+          <Pricing
+            plans={mockPricingPlans}
+            title="Pricing made for community-first teams"
+            description={`Choose a plan that scales with your regulatory workload.\nAll plans include onboarding support and proactive alerts.`}
+          />
         </section>
       </main>
     </div>

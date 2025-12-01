@@ -18,12 +18,16 @@ interface PricingProps {
   plans: PricingPlan[];
   title?: string;
   description?: string;
+  hideHeader?: boolean;
+  compact?: boolean;
 }
 
 export function Pricing({
   plans,
   title = "Simple, Transparent Pricing",
   description = "Choose the plan that works for you\nAll plans include access to our platform, lead generation tools, and dedicated support.",
+  hideHeader = false,
+  compact = false,
 }: PricingProps) {
   const [isMonthly, setIsMonthly] = useState(true);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -60,17 +64,29 @@ export function Pricing({
   };
 
   return (
-    <div className="container py-20">
-      <div className="mb-12 space-y-4 text-center">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          {title}
-        </h2>
-        <p className="whitespace-pre-line text-lg text-muted-foreground">
-          {description}
-        </p>
-      </div>
+    <div
+      className={cn(
+        "container",
+        compact ? "py-10 sm:py-12" : "py-20",
+      )}
+    >
+      {!hideHeader && (
+        <div className="mb-12 space-y-4 text-center">
+          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            {title}
+          </h2>
+          <p className="whitespace-pre-line text-lg text-muted-foreground">
+            {description}
+          </p>
+        </div>
+      )}
 
-      <div className="mb-10 flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
+      <div
+        className={cn(
+          "mb-10 flex flex-col items-center gap-2 sm:flex-row sm:justify-center",
+          hideHeader && "mt-4",
+        )}
+      >
         <div className="flex items-center gap-2">
           <Label htmlFor={switchId} className="font-semibold">
             Monthly

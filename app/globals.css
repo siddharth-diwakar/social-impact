@@ -34,6 +34,12 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --accent-cta: #7d3227;
+    --accent-cta-hover: #531324;
+    --accent-highlight: #af755c;
+    --accent-surface: rgba(237, 217, 212, 0.12);
+    --accent-surface-strong: rgba(237, 217, 212, 0.2);
+    --accent-dark-surface: rgba(62, 20, 33, 0.85);
   }
   .dark {
     --background: var(--brand-deep);
@@ -99,10 +105,64 @@
   }
 
   [class*="text-emerald"] {
-    color: #EDD9D4 !important;
+    color: #af755c !important;
   }
 
   [class*="text-slate-"] {
     color: rgba(237, 217, 212, 0.85) !important;
   }
+
+  /* Redirect the legacy emerald palette to the new brand tones */
+  [class*="dark:text-emerald"] {
+    color: hsl(var(--brand-rose)) !important;
+  }
+
+  [class*="hover:border-emerald"] {
+    border-color: var(--accent-highlight) !important;
+  }
+
+  [class*="bg-emerald-50"],
+  [class*="bg-emerald-100"] {
+    background-color: var(--accent-surface) !important;
+  }
+
+  [class*="bg-emerald-200"],
+  [class*="bg-emerald-500/10"],
+  [class*="bg-emerald-500/20"] {
+    background-color: var(--accent-surface-strong) !important;
+  }
+
+  [class*="bg-emerald-500"],
+  [class*="bg-emerald-600"] {
+    background-color: var(--accent-cta) !important;
+    color: hsl(var(--brand-rose)) !important;
+  }
+
+  [class*="bg-emerald-700"],
+  [class*="bg-emerald-800"],
+  [class*="bg-emerald-900"] {
+    background-color: var(--accent-dark-surface) !important;
+    color: hsl(var(--brand-rose)) !important;
+  }
+
+  [class*="hover:bg-emerald"] {
+    background-color: var(--accent-cta-hover) !important;
+    color: hsl(var(--brand-rose)) !important;
+  }
+
+  [class*="dark:bg-emerald"] {
+    background-color: var(--accent-dark-surface) !important;
+    color: hsl(var(--brand-rose)) !important;
+  }
+
+  [class*="ring-emerald"] {
+    --tw-ring-color: var(--accent-highlight) !important;
+  }
+}
+
+.lab-bg::before {
+  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+  box-sizing: border-box;
 }

@@ -1,4 +1,7 @@
+const planLink = (slug: string) => `/dashboard/payments?plan=${slug}`;
+
 export type PricingPlan = {
+  slug: string;
   name: string;
   price: string;
   yearlyPrice: string;
@@ -12,6 +15,7 @@ export type PricingPlan = {
 
 export const mockPricingPlans: PricingPlan[] = [
   {
+    slug: "starter",
     name: "STARTER",
     price: "50",
     yearlyPrice: "40",
@@ -24,11 +28,12 @@ export const mockPricingPlans: PricingPlan[] = [
       "Community support",
     ],
     description: "Perfect for individuals and small projects",
-    buttonText: "Start Free Trial",
-    href: "/sign-up",
+    buttonText: "Get Started",
+    href: planLink("starter"),
     isPopular: false,
   },
   {
+    slug: "professional",
     name: "PROFESSIONAL",
     price: "99",
     yearlyPrice: "79",
@@ -44,10 +49,11 @@ export const mockPricingPlans: PricingPlan[] = [
     ],
     description: "Ideal for growing teams and businesses",
     buttonText: "Get Started",
-    href: "/sign-up",
+    href: planLink("professional"),
     isPopular: true,
   },
   {
+    slug: "enterprise",
     name: "ENTERPRISE",
     price: "299",
     yearlyPrice: "239",
@@ -63,9 +69,8 @@ export const mockPricingPlans: PricingPlan[] = [
       "SLA agreement",
     ],
     description: "For large organizations with specific needs",
-    buttonText: "Contact Sales",
-    href: "/contact",
+    buttonText: "Get Started",
+    href: planLink("enterprise"),
     isPopular: false,
   },
 ];
-

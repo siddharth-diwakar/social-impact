@@ -186,7 +186,7 @@ export function OnboardingFlow() {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
                 <div
-                  className="h-full bg-emerald-600 transition-all duration-300 ease-out"
+                  className="h-full bg-brand-umber transition-all duration-300 ease-out dark:bg-brand-sugar"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -243,10 +243,10 @@ export function OnboardingFlow() {
 // Step 1: Welcome / Intro Screen
 function WelcomeStep({ onNext }: { onNext: () => void }) {
   return (
-    <Card className="border-emerald-100 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
+    <Card className="border-[#EDD9D4]/25 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
       <CardHeader className="text-center">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
-          <Sparkles className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#EDD9D4]/15 dark:bg-[#3E1421]/50">
+          <Sparkles className="h-10 w-10 text-brand-umber dark:text-brand-rose" />
         </div>
         <CardTitle className="text-3xl font-semibold text-slate-900 dark:text-slate-50">
           Welcome to compl.io
@@ -262,8 +262,8 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
             requirements in your community.
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-4 dark:border-emerald-900 dark:bg-emerald-500/10">
-              <ShieldCheck className="mx-auto mb-2 h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="rounded-lg border border-[#EDD9D4]/25 bg-[#EDD9D4]/10 p-4 dark:border-[#531324] dark:bg-[#3E1421]/40">
+              <ShieldCheck className="mx-auto mb-2 h-8 w-8 text-brand-umber dark:text-brand-rose" />
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 Stay Compliant
               </p>
@@ -271,8 +271,8 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
                 Monitor regulations
               </p>
             </div>
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-4 dark:border-emerald-900 dark:bg-emerald-500/10">
-              <Calendar className="mx-auto mb-2 h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="rounded-lg border border-[#EDD9D4]/25 bg-[#EDD9D4]/10 p-4 dark:border-[#531324] dark:bg-[#3E1421]/40">
+              <Calendar className="mx-auto mb-2 h-8 w-8 text-brand-umber dark:text-brand-rose" />
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 Track Deadlines
               </p>
@@ -280,8 +280,8 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
                 Never miss a date
               </p>
             </div>
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-4 dark:border-emerald-900 dark:bg-emerald-500/10">
-              <FileText className="mx-auto mb-2 h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="rounded-lg border border-[#EDD9D4]/25 bg-[#EDD9D4]/10 p-4 dark:border-[#531324] dark:bg-[#3E1421]/40">
+              <FileText className="mx-auto mb-2 h-8 w-8 text-brand-umber dark:text-brand-rose" />
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 Organize Docs
               </p>
@@ -293,7 +293,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
         </div>
         <Button
           onClick={onNext}
-          className="w-full bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+          className="w-full bg-brand-umber text-brand-rose hover:bg-brand-wine dark:bg-brand-sugar dark:text-brand-deep dark:hover:bg-brand-rose"
           size="lg"
         >
           Get Started
@@ -325,7 +325,7 @@ function AccountSetupStep({
   ];
 
   return (
-    <Card className="border-emerald-100 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
+    <Card className="border-[#EDD9D4]/25 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
           Tell us about yourself
@@ -415,7 +415,7 @@ function AccountSetupStep({
           </Button>
           <Button
             onClick={onNext}
-            className="flex-1 bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+            className="flex-1 bg-brand-umber text-brand-rose hover:bg-brand-wine dark:bg-brand-sugar dark:text-brand-deep dark:hover:bg-brand-rose"
           >
             Continue
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -458,7 +458,7 @@ function FeatureHighlightsStep({
   ];
 
   return (
-    <Card className="border-emerald-100 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
+    <Card className="border-[#EDD9D4]/25 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
           Key Features
@@ -472,9 +472,9 @@ function FeatureHighlightsStep({
           {features.map((feature, index) => (
             <div
               key={index}
-              className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-5 transition-colors hover:border-emerald-200 dark:border-emerald-900 dark:bg-emerald-500/10 dark:hover:border-emerald-700"
+              className="rounded-lg border border-[#EDD9D4]/25 bg-[#EDD9D4]/10 p-5 transition-colors hover:border-[#EDD9D4]/35 dark:border-[#531324] dark:bg-[#3E1421]/40 dark:hover:border-[#AF755C]"
             >
-              <feature.icon className="mb-3 h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+              <feature.icon className="mb-3 h-8 w-8 text-brand-umber dark:text-brand-rose" />
               <h3 className="mb-2 font-semibold text-slate-900 dark:text-slate-100">
                 {feature.title}
               </h3>
@@ -496,7 +496,7 @@ function FeatureHighlightsStep({
           </Button>
           <Button
             onClick={onNext}
-            className="flex-1 bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+            className="flex-1 bg-brand-umber text-brand-rose hover:bg-brand-wine dark:bg-brand-sugar dark:text-brand-deep dark:hover:bg-brand-rose"
           >
             Continue
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -520,7 +520,7 @@ function PermissionsStep({
   onBack: () => void;
 }) {
   return (
-    <Card className="border-emerald-100 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
+    <Card className="border-[#EDD9D4]/25 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
           Permissions & Integrations
@@ -532,7 +532,7 @@ function PermissionsStep({
       <CardContent className="space-y-6">
         <div className="space-y-4">
           <div className="flex items-start gap-4 rounded-lg border border-slate-200 p-4 dark:border-slate-700">
-            <Bell className="mt-1 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <Bell className="mt-1 h-5 w-5 text-brand-umber dark:text-brand-rose" />
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="notifications" className="cursor-pointer font-semibold">
@@ -554,7 +554,7 @@ function PermissionsStep({
           </div>
 
           <div className="flex items-start gap-4 rounded-lg border border-slate-200 p-4 dark:border-slate-700">
-            <Calendar className="mt-1 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <Calendar className="mt-1 h-5 w-5 text-brand-umber dark:text-brand-rose" />
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="calendar" className="cursor-pointer font-semibold">
@@ -574,7 +574,7 @@ function PermissionsStep({
           </div>
 
           <div className="flex items-start gap-4 rounded-lg border border-slate-200 p-4 dark:border-slate-700">
-            <FileText className="mt-1 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <FileText className="mt-1 h-5 w-5 text-brand-umber dark:text-brand-rose" />
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="documents" className="cursor-pointer font-semibold">
@@ -604,7 +604,7 @@ function PermissionsStep({
           </Button>
           <Button
             onClick={onNext}
-            className="flex-1 bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+            className="flex-1 bg-brand-umber text-brand-rose hover:bg-brand-wine dark:bg-brand-sugar dark:text-brand-deep dark:hover:bg-brand-rose"
           >
             Continue
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -624,10 +624,10 @@ function SuccessStep({
   isLoading: boolean;
 }) {
   return (
-    <Card className="border-emerald-100 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
+    <Card className="border-[#EDD9D4]/25 bg-white/80 shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
       <CardHeader className="text-center">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
-          <CheckCircle2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#EDD9D4]/15 dark:bg-[#3E1421]/50">
+          <CheckCircle2 className="h-10 w-10 text-brand-umber dark:text-brand-rose" />
         </div>
         <CardTitle className="text-3xl font-semibold text-slate-900 dark:text-slate-50">
           You're all set!
@@ -646,7 +646,7 @@ function SuccessStep({
         <Button
           onClick={onComplete}
           disabled={isLoading}
-          className="w-full bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400"
+          className="w-full bg-brand-umber text-brand-rose hover:bg-brand-wine dark:bg-brand-sugar dark:text-brand-deep dark:hover:bg-brand-rose"
           size="lg"
         >
           {isLoading ? "Completing..." : "Go to Dashboard"}

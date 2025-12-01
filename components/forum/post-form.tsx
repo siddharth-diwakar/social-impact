@@ -140,7 +140,7 @@ export function PostForm() {
       )}
 
       <section className="space-y-6">
-        <h2 className="text-lg font-semibold text-[#1F7A5C] dark:text-emerald-300">
+        <h2 className="text-lg font-semibold text-brand-umber dark:text-brand-rose">
           Tag your post
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
@@ -253,7 +253,7 @@ export function PostForm() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-[#1F7A5C] dark:text-emerald-300">
+        <h2 className="text-lg font-semibold text-brand-umber dark:text-brand-rose">
           Post content
         </h2>
         <div className="space-y-2">
@@ -264,7 +264,7 @@ export function PostForm() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="Give your post a clear headline"
             required
-            className="text-[#144C3A] dark:text-slate-100"
+            className="text-brand-umber dark:text-brand-rose"
           />
         </div>
         <div className="space-y-2">
@@ -278,9 +278,9 @@ export function PostForm() {
             }
             placeholder="Share your question, story, or learning in detail..."
             required
-            className="text-[#144C3A] dark:text-slate-100"
+            className="text-brand-umber dark:text-brand-rose"
           />
-          <p className="text-xs text-[#5F6F6B] dark:text-slate-400">
+          <p className="text-xs text-brand-sugar dark:text-brand-rose/80">
             Markdown supported. Keep personal details private.
           </p>
         </div>
@@ -302,4 +302,3 @@ export function PostForm() {
     </form>
   );
 }
-

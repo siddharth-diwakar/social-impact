@@ -60,15 +60,27 @@ function Hero() {
 
            
           </div>
-          <Button
-            asChild
-            size="lg"
-            className="gap-4 bg-[#EDD9D4] text-[#3E1421] hover:bg-[#EDD9D4]/90"
-          >
-            <Link href="/auth/sign-up">
-              Sign up here <MoveRight className="h-4 w-4" />
-            </Link>
-          </Button>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button
+              asChild
+              size="lg"
+              // Primary CTA now maps to the Figma primary (#7D3227) with a darker hover (#531324) and light text (#EDD9D4).
+              className="gap-4 bg-[#7D3227] text-[#EDD9D4] hover:bg-[#531324]"
+            >
+              <Link href="/auth/sign-up">
+                Sign up here <MoveRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              // Outline CTA now uses the accent tone (#AF755C) for borders/hover to match the updated palette while keeping light text.
+              className="border-[#AF755C] bg-transparent text-[#EDD9D4] hover:border-[#AF755C]/80 hover:bg-[#AF755C]/10"
+            >
+              <Link href="/pricing">View pricing</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

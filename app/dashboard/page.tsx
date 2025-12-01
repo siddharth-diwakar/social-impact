@@ -5,7 +5,6 @@ import { ArrowUpRight, Crown, Globe2, ShieldCheck } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { CalendarSync } from "@/components/calendar-sync";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -101,7 +100,6 @@ export default async function DashboardPage() {
           </nav>
 
           <div className="flex flex-1 items-center justify-end gap-3">
-            <ThemeSwitcher />
             <Button
               asChild
               variant="outline"
@@ -110,9 +108,21 @@ export default async function DashboardPage() {
             >
               <Link href="/Profile">Profile</Link>
             </Button>
-            <Suspense fallback={<Button size="sm">Loading</Button>}>
+            <Suspense
+              fallback={
+                <div className="h-9 w-[88px] rounded-full border border-[#EDD9D4]/40 bg-transparent" />
+              }
+            >
               <AuthButton />
             </Suspense>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="rounded-full border border-[#EDD9D4]/50 px-4 py-2 text-sm font-medium text-[#EDD9D4] hover:border-[#EDD9D4] hover:bg-[#EDD9D4]/10 hover:text-white"
+            >
+              <Link href="/pricing">Upgrade</Link>
+            </Button>
           </div>
         </div>
       </header>
@@ -177,7 +187,7 @@ export default async function DashboardPage() {
                   asChild
                   className="gap-2 rounded-full border border-[#EDD9D4]/20 bg-[#EDD9D4] text-[#3E1421] hover:bg-[#EDD9D4]/90"
                 >
-                  <Link href="/Assistant">
+                  <Link href="/techdemo">
                     Open AI assistant
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>

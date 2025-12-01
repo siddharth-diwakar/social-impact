@@ -102,7 +102,7 @@ export async function sendForumNotification({
         body = `
           <p>Hi there,</p>
           <p><strong>${actorName}</strong> replied to your post "<strong>${postTitle}</strong>".</p>
-          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #1F7A5C; color: white; text-decoration: none; border-radius: 5px;">View Reply</a></p>
+          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #7D3227; color: #EDD9D4; text-decoration: none; border-radius: 5px;">View Reply</a></p>
           <p>Best regards,<br>The compl.io Team</p>
         `;
         break;
@@ -112,7 +112,7 @@ export async function sendForumNotification({
         body = `
           <p>Hi there,</p>
           <p><strong>${actorName}</strong> mentioned you in a post "<strong>${postTitle}</strong>".</p>
-          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #1F7A5C; color: white; text-decoration: none; border-radius: 5px;">View Post</a></p>
+          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #7D3227; color: #EDD9D4; text-decoration: none; border-radius: 5px;">View Post</a></p>
           <p>Best regards,<br>The compl.io Team</p>
         `;
         break;
@@ -122,7 +122,7 @@ export async function sendForumNotification({
         body = `
           <p>Hi there,</p>
           <p><strong>${actorName}</strong> liked your post "<strong>${postTitle}</strong>".</p>
-          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #1F7A5C; color: white; text-decoration: none; border-radius: 5px;">View Post</a></p>
+          <p><a href="${postLink}" style="display: inline-block; padding: 10px 20px; background-color: #7D3227; color: #EDD9D4; text-decoration: none; border-radius: 5px;">View Post</a></p>
           <p>Best regards,<br>The compl.io Team</p>
         `;
         break;
@@ -132,7 +132,7 @@ export async function sendForumNotification({
         body = `
           <p>Hi there,</p>
           <p><strong>${actorName}</strong> started following you on compl.io.</p>
-          <p><a href="${appUrl}/Community" style="display: inline-block; padding: 10px 20px; background-color: #1F7A5C; color: white; text-decoration: none; border-radius: 5px;">Visit Community</a></p>
+          <p><a href="${appUrl}/Community" style="display: inline-block; padding: 10px 20px; background-color: #7D3227; color: #EDD9D4; text-decoration: none; border-radius: 5px;">Visit Community</a></p>
           <p>Best regards,<br>The compl.io Team</p>
         `;
         break;
@@ -186,4 +186,3 @@ export async function sendForumNotification({
     }
   }
 }
-

@@ -6,7 +6,6 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Pricing } from "@/components/ui/pricing";
 import { Button } from "@/components/ui/button";
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { mockPricingPlans } from "@/lib/data/pricing";
 import { createClient } from "@/lib/supabase/server";
 
@@ -45,7 +44,6 @@ export default async function DashboardPaymentsPage() {
                 Back
               </Link>
             </Button>
-            <ThemeSwitcher />
             <Suspense fallback={<Button size="sm">Loading</Button>}>
               <AuthButton />
             </Suspense>
@@ -54,11 +52,7 @@ export default async function DashboardPaymentsPage() {
       </header>
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-[#EDD9D4]/25 bg-[#3E1421]/60 shadow-[0_40px_180px_-80px_rgba(237,217,212,0.4)]">
-          <Pricing
-            plans={mockPricingPlans}
-            title="Compare plans and billing"
-            description={`Switch between monthly and annual billing to see what fits best.\nYou can upgrade directly inside the app when ready.`}
-          />
+          <Pricing plans={mockPricingPlans} hideHeader compact />
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#EDD9D4]/30 bg-[#531324]/60 p-6">
           <div>
@@ -81,4 +75,3 @@ export default async function DashboardPaymentsPage() {
     </div>
   );
 }
-

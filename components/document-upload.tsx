@@ -229,8 +229,24 @@ export function DocumentUpload({ initialDocuments = [] }: DocumentUploadProps) {
 
       const data = await response.json();
       if (response.ok) {
-        setUploadSuccess("Document analyzed successfully! Category, tags, and summary have been generated.");
-        fetchDocuments();
+        const analysis = data.analysis || {};
+        // Update the in-memory documents list so the UI reflects the new tags/details
+        setDocuments((prev) =>
+          prev.map((doc) =>
+            doc.id === docId
+              ? {
+                  ...doc,
+                  category: analysis.category ?? doc.category,
+                  tags: analysis.tags ?? doc.tags,
+                  description: analysis.description ?? doc.description,
+                  summary: analysis.summary ?? doc.summary,
+                }
+              : doc
+          )
+        );
+        setUploadSuccess(
+          "Document analyzed successfully! Category, tags, and summary generated (not saved to database)."
+        );
       } else {
         setUploadError(data.error || "Failed to analyze document");
       }
@@ -241,7 +257,7 @@ export function DocumentUpload({ initialDocuments = [] }: DocumentUploadProps) {
     } finally {
       setAnalyzingDoc(null);
     }
-  }, [fetchDocuments]);
+  }, []);
 
   const handleUpdate = useCallback(async () => {
     if (!editingDoc) return;

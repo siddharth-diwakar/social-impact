@@ -1,3 +1,6 @@
+/* Global font: League Spartan */
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -82,6 +85,7 @@
     background-image: linear-gradient(120deg, #3E1421 0%, #531324 45%, #7D3227 100%);
     background-attachment: fixed;
     min-height: 100vh;
+    font-family: "League Spartan", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
   .glass-panel {

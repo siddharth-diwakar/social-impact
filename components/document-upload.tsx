@@ -788,7 +788,7 @@ export function DocumentUpload({ initialDocuments = [] }: DocumentUploadProps) {
                           // Fetch documents to get download URLs
                           const docs = await fetchDocuments();
                           // Find the updated doc from the fetched results
-                          const updatedDoc = docs.find((d) => d.id === doc.id);
+                          const updatedDoc = docs.find((d: Document) => d.id === doc.id);
                           if (updatedDoc?.downloadUrl) {
                             setPreviewDoc({ ...doc, downloadUrl: updatedDoc.downloadUrl });
                           } else {
@@ -812,7 +812,7 @@ export function DocumentUpload({ initialDocuments = [] }: DocumentUploadProps) {
                           // Fetch documents to get download URLs
                           const docs = await fetchDocuments();
                           // Find the updated doc from the fetched results
-                          const updatedDoc = docs.find((d) => d.id === doc.id);
+                          const updatedDoc = docs.find((d: Document) => d.id === doc.id);
                           if (updatedDoc?.downloadUrl) {
                             window.open(updatedDoc.downloadUrl, "_blank");
                           }

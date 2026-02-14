@@ -277,14 +277,14 @@ export async function syncDocumentToCalendar(
 
     return {
       success: true,
-      eventId: newEventId,
+      eventId: newEventId ?? undefined,
       action: existingEventId ? "recreated" : "created",
     };
   } catch (error: any) {
     console.error("Error syncing document to calendar:", error);
     return {
       success: false,
-      error: error.message || "Failed to sync to calendar",
+      error: error?.message || "Failed to sync to calendar",
     };
   }
 }

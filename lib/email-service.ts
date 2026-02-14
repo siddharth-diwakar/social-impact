@@ -1,6 +1,10 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend(): Resend {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("RESEND_API_KEY is not set");
+  return new Resend(key);
+}
 
 interface EmailOptions {
   to: string;
@@ -21,6 +25,7 @@ export async function sendEmail({
       return { success: false, error: "Email service not configured" };
     }
 
+    const resend = getResend();
     const { data, error } = await resend.emails.send({
       from,
       to,

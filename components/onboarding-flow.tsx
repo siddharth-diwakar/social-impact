@@ -37,17 +37,6 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
-// Confetti type fix for TypeScript
-declare module "canvas-confetti" {
-  interface Options {
-    particleCount?: number;
-    spread?: number;
-    origin?: { y: number };
-  }
-  function confetti(options?: Options): Promise<void>;
-  export default confetti;
-}
-
 interface OnboardingData {
   name?: string;
   role?: string;
